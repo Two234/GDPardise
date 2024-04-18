@@ -5,39 +5,42 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float Speed;
-
     public Rigidbody2D rb;
-    // Start is called before the first frame update
+
+    private Vector3 dir = Vector3.zero;
+
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    void Move(Vector3 direction)
+    void Move()
     {
-        rb.velocity = (direction * Speed);
+        rb.velocity = dir.normalized * Speed;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //input detection
+        dir = Vector3.zero;
+
+        // Input detection
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            Move(Vector3.up);
+            dir += Vector3.up;
         }
-        else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
-            Move(-Vector3.up);
+            dir += Vector3.down;
         }
-        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            Move(-Vector3.right);
+            dir += Vector3.left;
         }
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            Move(Vector3.right);
+            dir += Vector3.right;
         }
 
+        Move();
     }
 }
